@@ -18,6 +18,7 @@ class _SearchPageSliderState extends State<SearchPageSlider> {
     List<Widget> lists = List.generate(widget.sliderPics.length, (index) {
       return Image.network(
         widget.sliderPics[index].imgUrl,
+        width: MediaQuery.of(context).size.width,
         fit: BoxFit.cover,
         webHtmlElementStrategy: WebHtmlElementStrategy.prefer,
       );

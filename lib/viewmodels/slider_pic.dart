@@ -1,5 +1,8 @@
 class SliderPic {
   String imgUrl;
-  int id;
+  String id;
   SliderPic({required this.imgUrl, required this.id});
+  factory SliderPic.fromJSON(Map<String, dynamic> data) {
+    return SliderPic(imgUrl: data["imgUrl"], id: data["id"]);
+  }
 }
