@@ -11,6 +11,9 @@ class RecommendWidget extends StatefulWidget {
 
 class _RecommendWidgetState extends State<RecommendWidget> {
   List<GoodsItem> _getGoodsItems(int nums) {
+    if (widget.recommendResult.subTypes.isEmpty) {
+      return [];
+    }
     return widget.recommendResult.subTypes.first.goodsItems.items
         .take(nums)
         .toList();
@@ -31,7 +34,7 @@ class _RecommendWidgetState extends State<RecommendWidget> {
                 fit: BoxFit.cover,
                 errorBuilder: (context, error, stackTrace) {
                   return Image.asset(
-                    "/lib/assets/bg.png",
+                    "lib/assets/bg.png",
                     width: 110,
                     height: 130,
                     fit: BoxFit.cover,

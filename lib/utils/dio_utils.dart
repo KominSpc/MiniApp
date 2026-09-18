@@ -28,7 +28,12 @@ class DioUtils {
           }
         },
         onError: (error, handler) {
-          handler.reject(error);
+          handler.reject(
+            DioException(
+              requestOptions: error.requestOptions,
+              message: error.response?.data["msg"] ?? "",
+            ),
+          );
         },
       ),
     );
@@ -42,13 +47,22 @@ class DioUtils {
     return _processRes(res);
   }
 
+  Future<dynamic> post(String url, {Map<String, dynamic>? data}) {
+    Future<Response<dynamic>> res = _dio.post(url, data: data ?? {});
+    return _processRes(res);
+  }
+
   Future<dynamic> _processRes(Future<Response<dynamic>> res) async {
-    Response<dynamic> res_d = await res;
-    Map<String, dynamic> data = res_d.data as Map<String, dynamic>;
-    if (data["code"] == GlobalConstants.SUCCESS_CODE) {
-      return data["result"];
-    } else {
-      throw Exception(data["msg"] ?? "回收数据异常");
+    try {
+      Response<dynamic> res_d = await res;
+      Map<String, dynamic> data = res_d.data as Map<String, dynamic>;
+      if (data["code"] == GlobalConstants.SUCCESS_CODE) {
+        return data["result"];
+      } else {
+        throw Exception(data["msg"] ?? "回收数据异常");
+      }
+    } catch (e) {
+      rethrow;
     }
   }
 }

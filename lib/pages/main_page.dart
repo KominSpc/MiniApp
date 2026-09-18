@@ -38,7 +38,7 @@ class _MainPageState extends State<MainPage> {
         navName: "clander",
         iconPath: r"lib/assets/calendar-days.png",
         activeIconPath: r"lib/assets/calendar-days_active.png",
-        text: "日历",
+        text: "登录",
       ),
     );
 
@@ -47,7 +47,7 @@ class _MainPageState extends State<MainPage> {
         navName: "bot",
         iconPath: r"lib/assets/bot_active.png",
         activeIconPath: r"lib/assets/bot.png",
-        text: "智能体",
+        text: "用户页",
       ),
     );
     return lists;

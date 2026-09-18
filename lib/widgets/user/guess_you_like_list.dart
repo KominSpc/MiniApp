@@ -1,15 +1,15 @@
 import 'package:flutter/material.dart';
-import 'package:mini_app/viewmodels/home_products.dart';
+import 'package:mini_app/viewmodels/User/guess_like.dart';
 
-class SearchPageMoreList extends StatefulWidget {
-  List<Product> products;
-  SearchPageMoreList({required this.products, super.key});
+class GuessYourLikeList extends StatefulWidget {
+  List<GoodsItem> products;
+  GuessYourLikeList({required this.products, super.key});
 
   @override
-  State<SearchPageMoreList> createState() => _SearchPageMoreListState();
+  State<GuessYourLikeList> createState() => _GuessYourLikeListState();
 }
 
-class _SearchPageMoreListState extends State<SearchPageMoreList> {
+class _GuessYourLikeListState extends State<GuessYourLikeList> {
   @override
   Widget build(BuildContext context) {
     return SliverGrid.builder(
