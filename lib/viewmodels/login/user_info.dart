@@ -27,17 +27,17 @@ class UserInfo {
 
   factory UserInfo.fromJSON(Map<String, dynamic> data) {
     return UserInfo(
-      id: data["id"] as String,
-      account: data["account"] as String,
-      mobile: data["mobile"] as String,
-      token: data["token"] as String,
-      avatar: data["avatar"] as String,
-      nickname: data["nickname"] as String,
-      gender: data["gender"] as String,
-      birthday: data["birthday"] as String,
-      cityCode: data["cityCode"] as String,
-      provinceCode: data["provinceCode"] as String,
-      profession: data["profession"] as String,
+      id: data["id"]?.toString() ?? '',
+      account: data["account"]?.toString() ?? '',
+      mobile: data["mobile"]?.toString() ?? '',
+      token: data["token"]?.toString() ?? '',
+      avatar: data["avatar"]?.toString() ?? '',
+      nickname: data["nickname"]?.toString() ?? '',
+      gender: data["gender"]?.toString() ?? '',
+      birthday: data["birthday"]?.toString() ?? '',
+      cityCode: data["cityCode"]?.toString() ?? '',
+      provinceCode: data["provinceCode"]?.toString() ?? '',
+      profession: data["profession"]?.toString() ?? '',
     );
   }
 }

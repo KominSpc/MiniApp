@@ -1,6 +1,8 @@
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:mini_app/api/login.dart';
+import 'package:mini_app/stores/user_info_controller.dart';
 import 'package:mini_app/utils/bottom_msg_box.dart';
 import 'package:mini_app/viewmodels/login/user_info.dart';
 
@@ -19,7 +21,8 @@ class _LoginPageState extends State<LoginPage> {
   final TextEditingController _passwordController = TextEditingController();
   bool _passChecked = false;
   UserInfo? _userInfo;
-
+  //UserInfoController uic = Get.put(UserInfoController());
+  UserInfoController uic_f = Get.find();
   void _login() async {
     try {
       Map<String, String> data = {
@@ -29,6 +32,11 @@ class _LoginPageState extends State<LoginPage> {
       _userInfo = await catchUserInfo(data);
       Navigator.pop(context);
       BottomMsgBox.bottomInfo("用户登陆成功", context);
+      if (_userInfo == null) {
+        return;
+      } else {
+        uic_f.updateUserInfo(_userInfo!);
+      }
     } catch (e) {
       BottomMsgBox.bottomInfo((e as DioException).message ?? "未知异常", context);
     }

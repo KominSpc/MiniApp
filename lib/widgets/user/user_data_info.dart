@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:mini_app/stores/user_info_controller.dart';
 
 class UserDataInfo extends StatefulWidget {
   const UserDataInfo({super.key});
@@ -12,6 +14,7 @@ class _UserDataInfoState extends State<UserDataInfo> {
   final String userSubtitle = "这个人很懒，什么都没写~";
   final String avatarUrl = "";
   final bool isOnline = true;
+  UserInfoController uic = Get.put(UserInfoController());
 
   @override
   Widget build(BuildContext context) {
@@ -44,31 +47,34 @@ class _UserDataInfoState extends State<UserDataInfo> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     mainAxisSize: MainAxisSize.min,
                     children: [
-                      const Text(
-                        "张三",
-                        style: TextStyle(
-                          fontSize: 16,
-                          fontWeight: FontWeight.w600,
-                          color: Color(0xFF1F1F1F),
-                          height: 1.3,
-                        ),
-                      ),
+                      Obx(() {
+                        return Text(
+                          uic.userInfo.value.nickname,
+                          style: TextStyle(
+                            fontSize: 16,
+                            fontWeight: FontWeight.w600,
+                            color: Color(0xFF1F1F1F),
+                            height: 1.3,
+                          ),
+                        );
+                      }),
                       const SizedBox(height: 3),
-                      Text(
-                        userSubtitle,
-                        style: const TextStyle(
-                          fontSize: 12.5,
-                          color: Color(0xFF9A9A9A),
-                          height: 1.3,
-                        ),
-                        maxLines: 1,
-                        overflow: TextOverflow.ellipsis,
-                      ),
+                      Obx(() {
+                        return Text(
+                          uic.userInfo.value.account,
+                          style: const TextStyle(
+                            fontSize: 12.5,
+                            color: Color(0xFF9A9A9A),
+                            height: 1.3,
+                          ),
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
+                        );
+                      }),
                     ],
                   ),
                 ),
                 const SizedBox(width: 8),
-                // 细的 chevron，不要圆底 + 粗箭头
                 const Icon(
                   Icons.chevron_right_rounded,
                   color: Color(0xFFC8C8C8),
@@ -111,15 +117,16 @@ class _UserDataInfoState extends State<UserDataInfo> {
                   ),
                 ],
               ),
-              child: ClipOval(
-                child: avatarUrl.isNotEmpty
-                    ? Image.network(
-                        avatarUrl,
-                        fit: BoxFit.cover,
-                        errorBuilder: (_, __, ___) => _defaultAvatar(),
-                      )
-                    : _defaultAvatar(),
-              ),
+              child: Obx(() {
+                return ClipOval(
+                  child: Image.network(
+                    uic.userInfo.value.avatar,
+                    webHtmlElementStrategy: WebHtmlElementStrategy.prefer,
+                    fit: BoxFit.cover,
+                    errorBuilder: (_, __, ___) => _defaultAvatar(),
+                  ),
+                );
+              }),
             ),
             if (isOnline)
               Positioned(
