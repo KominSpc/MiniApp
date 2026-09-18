@@ -4,6 +4,7 @@ class GlobalConstants {
   static const int TIMEOUT = 30;
   static const String SUCCESS_CODE = "1";
   static const int ERROR_CODE = 2;
+  static const String USER_TOKEN = "US_TOKEN";
 }
 
 /// 接口地址
@@ -16,4 +17,5 @@ class HttpConstants {
   static const String PRODUCTS = "/home/recommend";
   static const String GUESS_LIKE = "/home/goods/guessLike";
   static const String LOGIN = "/login";
+  static const String PROFILE = "/member/profile";
 }

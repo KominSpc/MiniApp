@@ -1,9 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:mini_app/api/login.dart';
 import 'package:mini_app/pages/login_page.dart';
 import 'package:mini_app/pages/market_page.dart';
 import 'package:mini_app/pages/search_page.dart';
 import 'package:mini_app/pages/user_page.dart';
+import 'package:mini_app/stores/token_manager.dart';
 import 'package:mini_app/viewmodels/navigationButton.dart';
+
+import '../stores/user_info_controller.dart';
 
 class MainPage extends StatefulWidget {
   const MainPage({super.key});
@@ -14,6 +19,7 @@ class MainPage extends StatefulWidget {
 
 class _MainPageState extends State<MainPage> {
   int _navNowIndex = 0;
+  UserInfoController uic = Get.put(UserInfoController()); //全局用户数据管理器
   List<Navigationbutton> _createNavButtonList() {
     List<Navigationbutton> lists = [];
     lists.add(
@@ -51,6 +57,19 @@ class _MainPageState extends State<MainPage> {
       ),
     );
     return lists;
+  }
+
+  Future<void> _initUserPage() async {
+    await tokenManager.init();
+    if (tokenManager.getToken().isNotEmpty) {
+      uic.updateUserInfo(await catchUserInfoWithToken());
+    }
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    _initUserPage();
   }
 
   @override

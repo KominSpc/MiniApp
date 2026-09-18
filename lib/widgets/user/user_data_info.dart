@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:mini_app/stores/token_manager.dart';
 import 'package:mini_app/stores/user_info_controller.dart';
+import 'package:mini_app/utils/loading.dart';
+import 'package:mini_app/viewmodels/login/user_info.dart';
 
 class UserDataInfo extends StatefulWidget {
   const UserDataInfo({super.key});
@@ -14,7 +17,44 @@ class _UserDataInfoState extends State<UserDataInfo> {
   final String userSubtitle = "这个人很懒，什么都没写~";
   final String avatarUrl = "";
   final bool isOnline = true;
-  UserInfoController uic = Get.put(UserInfoController());
+  UserInfoController uic = Get.find();
+
+  Widget _createExitButton() {
+    return uic.userInfo.value.id.isNotEmpty
+        ? GestureDetector(
+            onTap: () {
+              showDialog(
+                context: context,
+                builder: (context) {
+                  return AlertDialog(
+                    title: Text("要退出吗"),
+                    content: Text("确定要退出当前帐号吗"),
+                    actions: [
+                      TextButton(
+                        onPressed: () {
+                          Navigator.pop(context);
+                        },
+                        child: Text("取消"),
+                      ),
+                      TextButton(
+                        onPressed: () async {
+                          Navigator.pop(context);
+                          InfoDialog.show(context, msg: "正在退出");
+                          await tokenManager.remove();
+                          uic.updateUserInfo(UserInfo.fromJSON({}));
+                          InfoDialog.hide(context);
+                        },
+                        child: Text("确定"),
+                      ),
+                    ],
+                  );
+                },
+              );
+            },
+            child: Text("退出"),
+          )
+        : Text("");
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -75,11 +115,9 @@ class _UserDataInfoState extends State<UserDataInfo> {
                   ),
                 ),
                 const SizedBox(width: 8),
-                const Icon(
-                  Icons.chevron_right_rounded,
-                  color: Color(0xFFC8C8C8),
-                  size: 22,
-                ),
+                Obx(() {
+                  return _createExitButton();
+                }),
               ],
             ),
           ),

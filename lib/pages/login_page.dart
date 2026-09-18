@@ -4,6 +4,8 @@ import 'package:get/get.dart';
 import 'package:mini_app/api/login.dart';
 import 'package:mini_app/stores/user_info_controller.dart';
 import 'package:mini_app/utils/bottom_msg_box.dart';
+import 'package:mini_app/stores/token_manager.dart';
+import 'package:mini_app/utils/loading.dart';
 import 'package:mini_app/viewmodels/login/user_info.dart';
 
 class LoginPage extends StatefulWidget {
@@ -21,23 +23,30 @@ class _LoginPageState extends State<LoginPage> {
   final TextEditingController _passwordController = TextEditingController();
   bool _passChecked = false;
   UserInfo? _userInfo;
-  //UserInfoController uic = Get.put(UserInfoController());
-  UserInfoController uic_f = Get.find();
+  UserInfoController uic = Get.find();
+
   void _login() async {
     try {
       Map<String, String> data = {
         "account": _accController.text,
         "password": _passwordController.text,
       };
+      InfoDialog.show(context);
       _userInfo = await catchUserInfo(data);
+      InfoDialog.hide(context);
       Navigator.pop(context);
       BottomMsgBox.bottomInfo("用户登陆成功", context);
       if (_userInfo == null) {
         return;
       } else {
-        uic_f.updateUserInfo(_userInfo!);
+        uic.updateUserInfo(_userInfo!);
+        tokenManager.init();
+        tokenManager.set(_userInfo!.token);
+
+        print(tokenManager.getToken());
       }
     } catch (e) {
+      Navigator.pop(context);
       BottomMsgBox.bottomInfo((e as DioException).message ?? "未知异常", context);
     }
   }

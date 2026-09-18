@@ -9,3 +9,9 @@ Future<UserInfo> catchUserInfo(Map<String, dynamic>? data) async {
       await _dio.post(HttpConstants.LOGIN, data: data) as Map<String, dynamic>;
   return UserInfo.fromJSON(info);
 }
+
+Future<UserInfo> catchUserInfoWithToken() async {
+  return UserInfo.fromJSON(
+    await _dio.get(HttpConstants.PROFILE) as Map<String, dynamic>,
+  );
+}
